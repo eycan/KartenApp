@@ -4,7 +4,8 @@ import android.app.Activity
 import android.widget.Button
 import com.example.kartenapp_prototyp.R
 import com.example.kartenapp_prototyp.api.WaypointDatabaseAPI
-import com.example.kartenapp_prototyp.view.ButtonDisplay
+import com.example.kartenapp_prototyp.model.RouteModel
+import com.example.kartenapp_prototyp.ui.view.ButtonDisplay
 import kotlinx.coroutines.*
 
 /**
@@ -17,6 +18,9 @@ class ButtonController(
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.Default + job)
 
+    /**
+     * aktiviert einen Listener auf dem Aufnahme-Button
+     */
     fun registerRecordButton() {
         val button: Button = activity.findViewById(R.id.button1)
         button.setOnClickListener {
@@ -34,7 +38,7 @@ class ButtonController(
         ButtonDisplay.startRecordingButton(button)
 
         scope.launch {
-            RouteController.startRecording(MyMapController.map.getMap())
+            RouteModel.startRecording()
         }
     }
 
@@ -43,7 +47,7 @@ class ButtonController(
         ButtonDisplay.stopRecordingButton(button)
 
         scope.launch {
-            val route = RouteController.stopRecording()
+            val route = RouteModel.stopRecording()
             val database = WaypointDatabaseAPI(activity)
             database.insertRoute(route)
         }

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.example.kartenapp_prototyp.model.RouteModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationCallback
@@ -15,11 +16,13 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
 
 /**
  * Controller der den Standort verwaltet und mit der Standort API-kommuniziert
  */
 class LocationController(
+    private var myMapController: MyMapController,
     private var activity: Activity,
     permissionController: PermissionController
 ) {
@@ -58,7 +61,7 @@ class LocationController(
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location ->
                         if (location != null) {
-                            MyMapController.map.setCenter(GeoPoint(location.latitude, location.longitude))
+                            myMapController.setCenter(GeoPoint(location.latitude, location.longitude))
                         } else {
                             Log.d("debugme", "Location is doof")
                         }
@@ -84,12 +87,11 @@ class LocationController(
 
         fun onMyLocationResult(location: Location) {
             val geoPoint = GeoPoint(location.latitude, location.longitude)
-            RouteController.updateRoute(
-                geoPoint,
-                MyMapController.map.getMap()
+            RouteModel.updateRoute(
+                geoPoint
             )
             if (firstLocation) {
-                MyMapController.map.setCenter(geoPoint)
+                myMapController.setCenter(geoPoint)
                 firstLocation = false
             }
         }

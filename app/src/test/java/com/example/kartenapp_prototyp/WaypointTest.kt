@@ -1,6 +1,6 @@
 package com.example.kartenapp_prototyp
 
-import com.example.kartenapp_prototyp.data.Waypoint
+import com.example.kartenapp_prototyp.model.Waypoint
 import junit.framework.TestCase.assertEquals
 import org.junit.runner.RunWith
 import org.mockito.Mock

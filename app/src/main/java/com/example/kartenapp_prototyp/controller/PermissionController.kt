@@ -17,7 +17,6 @@ class PermissionController(
 
 
     init {
-        println("debugme - init")
         requestPermissionsIfNecessary(arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -25,7 +24,6 @@ class PermissionController(
     }
 
     private fun requestPermissionsIfNecessary(permissions: Array<String>) {
-        println("debugme - requestPermissionsIfNecessary")
         val permissionsToRequest = mutableListOf<String>()
         permissions.forEach { permission ->
             if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -42,7 +40,6 @@ class PermissionController(
     }
 
     fun requestLocationPermissions() {
-        println("debugme - requestLocationPermissions")
         ActivityCompat.requestPermissions(
             activity,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -53,11 +50,10 @@ class PermissionController(
     companion object {
 
         fun checkLocationPermissions(context: Context): Boolean {
-            println("debugme - checkLocationPermissions")
-            return ActivityCompat.checkSelfPermission(
+            return (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED)
         }
     }
 }

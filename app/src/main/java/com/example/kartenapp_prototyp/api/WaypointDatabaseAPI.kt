@@ -4,8 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
-import com.example.kartenapp_prototyp.data.Route
-import com.example.kartenapp_prototyp.data.Waypoint
+import com.example.kartenapp_prototyp.model.Route
+import com.example.kartenapp_prototyp.model.Waypoint
 
 /**
  * Schnittstelle zur Kommunikation mit der SQLite-Datenbank

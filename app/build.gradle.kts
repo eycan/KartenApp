@@ -42,6 +42,11 @@ android {
             excludes += "com/j256/ormlite/core/*"
         }
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -74,6 +79,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.rules)
+    implementation(libs.androidx.junit.ktx)
 
     //testImplementation(libs.mockito.kotlin)
     testImplementation(libs.mockito.inline)
@@ -84,14 +90,16 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter)
 
+    androidTestImplementation(libs.core.ktx)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
 
-
     testImplementation(libs.robolectric)
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.test.manifest)

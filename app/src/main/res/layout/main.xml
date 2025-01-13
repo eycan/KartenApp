@@ -24,7 +24,7 @@
         android:id="@+id/button_to_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button 2"
+        android:text="Zu den Routen"
         tools:ignore="HardcodedText" />
 
     <TextView

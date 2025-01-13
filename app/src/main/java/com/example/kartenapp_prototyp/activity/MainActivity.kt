@@ -9,9 +9,11 @@ import com.example.kartenapp_prototyp.controller.ButtonController
 import com.example.kartenapp_prototyp.controller.MyMapController
 import com.example.kartenapp_prototyp.controller.PermissionController
 import com.example.kartenapp_prototyp.R
+import com.example.kartenapp_prototyp.api.WaypointDatabaseAPI
 import com.example.kartenapp_prototyp.controller.LocationController
-import com.example.kartenapp_prototyp.controller.RouteController
+import com.example.kartenapp_prototyp.model.RouteModel
 import org.osmdroid.config.Configuration.getInstance
+import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 /**
@@ -23,8 +25,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var permissionController: PermissionController
     private lateinit var locationController: LocationController
+    private lateinit var myMapController: MyMapController
 
     private lateinit var myLocationOverlay: MyLocationNewOverlay
+    private lateinit var database: WaypointDatabaseAPI
+
+    private lateinit var map: MapView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,25 +48,29 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main)
 
         ////////// MAP CONTROLLER //////////
-        MyMapController.createMapController(this)
+        map = findViewById(R.id.map)
+        myMapController = MyMapController(map)
+
+        ////////// DATABASE //////////
+        database = WaypointDatabaseAPI(this)
 
         ////////// WAYPOINT CONTROLLER //////////
-        RouteController.createRouteController(this, MyMapController.map.getMap())
+        RouteModel.createRouteController(this, map, database)
 
         ////////// LOCATION PROVIDER //////////
 
         ////////// LOCATION Controller //////////
-        locationController = LocationController(this, permissionController)
+        locationController = LocationController(myMapController, this, permissionController)
 
         ////////// ROUTEN-AUFRUF //////////
         val currentRoute = intent.getLongExtra("CURRENT_ROUTE", -42L)
         if (currentRoute != -42L) {
-            RouteController.loadRoute(currentRoute)
+            RouteModel.loadRoute(currentRoute)
         }
 
         ////////// LOCATION-OVERLAY //////////
-        myLocationOverlay = MyLocationNewOverlay(MyMapController.map.getMap())
-        MyMapController.map.getMap().overlays.add(myLocationOverlay)
+        myLocationOverlay = MyLocationNewOverlay(map)
+        map.overlays.add(myLocationOverlay)
 
         myLocationOverlay.enableMyLocation()
         myLocationOverlay.enableFollowLocation()
@@ -79,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         if (PermissionController.checkLocationPermissions(this)) {
             locationController.startLocationUpdates()
         }
-        MyMapController.map.getMap().onResume()
+        map.onResume()
     }
 
     /**
@@ -87,7 +97,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onPause() {
         super.onPause()
-        MyMapController.map.getMap().onPause()
+        map.onPause()
         locationController.removeLocationUpdates()
     }
 

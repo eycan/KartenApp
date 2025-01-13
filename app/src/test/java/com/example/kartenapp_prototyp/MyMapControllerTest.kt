@@ -3,8 +3,6 @@ package com.example.kartenapp_prototyp
 import android.app.Activity
 import android.view.View
 import com.example.kartenapp_prototyp.controller.MyMapController
-import com.example.kartenapp_prototyp.data.Route
-import com.example.kartenapp_prototyp.api.WaypointDatabaseAPI
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
@@ -25,12 +23,6 @@ class MyMapControllerTest {
     lateinit var mockMapView: MapView
 
     @Mock
-    lateinit var mockDatabase: WaypointDatabaseAPI
-
-    @Mock
-    lateinit var mockRoute: Route
-
-    @Mock
     lateinit var mockGeoPoint: GeoPoint
 
     @Mock
@@ -38,9 +30,6 @@ class MyMapControllerTest {
 
     @Mock
     lateinit var mockMyMapController: MyMapController
-
-    @Mock
-    lateinit var mockRouteControllerCompanion: MapView
 
     @Before
     fun setup() {
@@ -50,13 +39,14 @@ class MyMapControllerTest {
         mockGeoPoint = mock()
     }
 
+    /**
+     * Es wird lediglich überprüft, ob die zuständige Methode des MapControllers aufgerufen wird
+     */
     @Test
     fun testMapGetsCentered() {
-
-        whenever(mockActivity.findViewById<View>(any())).thenReturn(mockMapView)
         whenever(mockMapView.controller).thenReturn(mockIMapController)
 
-        val myMapController = MyMapController(mockActivity)
+        val myMapController = MyMapController(mockMapView)
         myMapController.setCenter(mockGeoPoint)
 
         verify(mockIMapController, times(1)).setCenter(mockGeoPoint)

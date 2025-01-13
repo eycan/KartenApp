@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kartenapp_prototyp.controller.ButtonController
 import com.example.kartenapp_prototyp.R
-import com.example.kartenapp_prototyp.view.WaypointAdapter
+import com.example.kartenapp_prototyp.ui.view.WaypointAdapter
 import com.example.kartenapp_prototyp.api.WaypointDatabaseAPI
 
 /**
